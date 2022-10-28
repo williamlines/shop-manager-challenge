@@ -1,4 +1,6 @@
 require 'shop_repository'
+require_relative '../lib/item'
+require_relative '../lib/order'
 
 def reset_table
   seed_sql = File.read('spec/seeds_shop.sql')
@@ -32,5 +34,30 @@ describe ShopRepository do
     expect(orders[1].customer_name).to eq 'Bob'
     expect(orders[0].date_placed).to eq '2022-10-25'
     expect(orders[0].item_id).to eq '1'
+  end
+  it "can create a new item" do
+    repo = ShopRepository.new
+    item = Item.new
+    item.name = 'Frying Pan'
+    item.price = '1500'
+    item.quantity = '13'
+
+    repo.create_item(item)
+    items = repo.all_items
+    expect(items.length).to eq 6
+    expect(items[-1].name).to eq "Frying Pan"
+  end
+
+  it "can create a new order" do
+    repo = ShopRepository.new
+    order = Order.new
+    order.customer_name = 'David'
+    order.date_placed = '2022-10-28'
+    order.item_id = '3'
+
+    repo.create_order(order)
+    orders = repo.all_orders
+    expect(orders.length).to eq 4
+    expect(orders[-1].customer_name).to eq "David"
   end
 end

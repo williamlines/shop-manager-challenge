@@ -43,14 +43,18 @@ class ShopRepository
   # Gets a single record by its ID
   # One argument: the id (number)
   def create_item(item)
-    # Executes the SQL query:
+    sql = 'INSERT INTO items (name, price, quantity) VALUES($1, $2, $3);'
+    params = [item.name, item.price, item.quantity]
 
-    # Creates new instance of item.
+    DatabaseConnection.exec_params(sql, params)
+    return nil
   end
 
   def create_order(order)
-    # Executes the SQL query:
+    sql = 'INSERT INTO orders (customer_name, date_placed, item_id) VALUES($1, $2, $3);'
+    params = [order.customer_name, order.date_placed, order.item_id]
 
-    # Creates new instance of order.
+    DatabaseConnection.exec_params(sql, params)
+    return nil
   end
 end
